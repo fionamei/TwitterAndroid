@@ -7,6 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".TimelineActivity">
 
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="9dp"
+        android:clickable="true"
+        android:text="Logout" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvTweets"
         android:layout_width="match_parent"
@@ -14,5 +23,8 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"
-        android:layout_marginBottom="0dp" />
+        android:layout_marginBottom="0dp">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
 </RelativeLayout>
