@@ -54,6 +54,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         ImageView ivProfileImage;
         TextView tvBody;
         TextView tvScreenName;
+        ImageView ivContentImage;
 
 
         // a tweet
@@ -62,6 +63,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             tvBody = itemView.findViewById(R.id.tvBody);
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
+            ivContentImage = itemView.findViewById(R.id.ivContentImage);
         }
 
         public void bind (Tweet tweet) {
@@ -70,6 +72,16 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             Glide.with(context)
                     .load(tweet.user.profileImageUrl)
                     .into(ivProfileImage);
+         //   System.out.println("the url here is" + tweet.contentImageUrl);
+            if (tweet.contentImageUrl != null) {
+                ivContentImage.setVisibility(View.VISIBLE);
+                Glide.with(context)
+                        .load(tweet.contentImageUrl)
+                        .into(ivContentImage);
+            } else {
+                // must set this to gone or certain views will be reused
+                ivContentImage.setVisibility(View.GONE);
+            }
         }
     }
 
