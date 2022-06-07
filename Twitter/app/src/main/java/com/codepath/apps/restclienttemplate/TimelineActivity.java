@@ -1,10 +1,15 @@
 package com.codepath.apps.restclienttemplate;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +24,7 @@ import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +34,7 @@ import okhttp3.Headers;
 public class TimelineActivity extends AppCompatActivity {
 
     public static final String TAG = "TimelineActivity";
-
+    private final int REQUEST_CODE = 20;
     TwitterClient client;
     RecyclerView rvTweets;
     List<Tweet> tweets;
@@ -61,6 +67,27 @@ public class TimelineActivity extends AppCompatActivity {
         return true;
     }
 
+    ActivityResultLauncher<Intent> newTweetLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // get data from intent (tweet)
+                        Intent data = result.getData();
+                        Tweet tweet = Parcels.unwrap(data.getParcelableExtra("tweet"));
+                        //update rv with the tweet
+                        //modify datasource
+                        tweets.add(0, tweet);
+                        //update the adapter
+                        adapter.notifyItemInserted(0);
+                        rvTweets.smoothScrollToPosition(0);
+                    }
+                }
+            }
+    );
+    
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.compose) {
@@ -68,7 +95,7 @@ public class TimelineActivity extends AppCompatActivity {
             Toast.makeText(this, "compose", Toast.LENGTH_SHORT).show();
             //navigate to the compose activity
             Intent intent = new Intent(this, ComposeActivity.class);
-            startActivity(intent);
+            newTweetLauncher.launch(intent);
             return true;
         } else if (item.getItemId() == R.id.logout) {
             onLogoutButton();
