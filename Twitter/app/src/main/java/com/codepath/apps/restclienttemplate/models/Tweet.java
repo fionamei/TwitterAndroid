@@ -37,17 +37,12 @@ public class Tweet {
         return tweets;
     }
 
-    public static String getImageUrl(JSONObject jsonObject) {
+    public static String getImageUrl(JSONObject jsonObject) throws JSONException {
         String media_url = null;
-        try {
+        if (jsonObject.has("media")) {
             JSONArray medias = jsonObject.getJSONArray("media");
-            if (medias != null) {
-                JSONObject first_media = (JSONObject) medias.get(0);
-                media_url = first_media.getString("media_url_https");
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
+            JSONObject first_media = (JSONObject) medias.get(0);
+            media_url = first_media.getString("media_url_https");
         }
 
         return media_url;
