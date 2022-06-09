@@ -1,6 +1,8 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.codepath.apps.restclienttemplate.models.Tweet;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -39,6 +44,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         //get the data at position
         Tweet tweet = tweets.get(position);
+        //sets the tag to get the tweet later in detail view
+        holder.rootView.setTag(tweet);
         //bind the data that we get (the tweet) with the view holder
         holder.bind(tweet);
     }
@@ -56,27 +63,46 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvScreenName;
         ImageView ivContentImage;
         TextView tvTimestamp;
+        View rootView;
+        TextView tvName;
 
 
         // a tweet
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            rootView = itemView;
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             tvBody = itemView.findViewById(R.id.tvBody);
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             ivContentImage = itemView.findViewById(R.id.ivContentImage);
             tvTimestamp = itemView.findViewById(R.id.tvTimestamp);
+            tvName = itemView.findViewById(R.id.tvName);
+
+            rootView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final Tweet tweet = (Tweet)view.getTag();
+                    Log.i("TweetsAdapter", "tweet clicked!" + tweet);
+                    if (tweet != null) {
+                        Intent i = new Intent(context, DetailTweetActivity.class);
+                        i.putExtra("TweetDetails", Parcels.wrap(tweet));
+                        context.startActivity(i);
+                    }
+                }
+            });
         }
 
         public void bind (Tweet tweet) {
             tvBody.setText(tweet.body);
-            tvScreenName.setText(tweet.user.screenName);
+            tvScreenName.setText("@" + tweet.user.screenName);
             tvTimestamp.setText(tweet.timeAgo);
+            tvName.setText(tweet.user.name);
             Glide.with(context)
-                    .load(tweet.user.profileImageUrl)
-                    .into(ivProfileImage);
-            if (tweet.contentImageUrl != null) {
-                ivContentImage.setVisibility(View.VISIBLE);
+                        .load(tweet.user.profileImageUrl)
+                        .circleCrop()
+                        .into(ivProfileImage);
+                if (tweet.contentImageUrl != null) {
+                    ivContentImage.setVisibility(View.VISIBLE);
                 Glide.with(context)
                         .load(tweet.contentImageUrl)
                         .into(ivContentImage);

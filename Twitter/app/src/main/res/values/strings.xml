@@ -9,5 +9,8 @@
     <string name="what_s_happening">What\'s happening?</string>
     <string name="logout">Logout</string>
     <string name="compose">Compose</string>
+    <string name="Retweet">Retweet</string>
+    <string name="Like">Like</string>
+    <string name="Share">Share</string>
 
 </resources>

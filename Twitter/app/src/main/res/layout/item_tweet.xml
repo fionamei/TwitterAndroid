@@ -2,16 +2,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/RelativeLayout"
+    android:id="@+id/rlTweet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    android:layout_marginStart="5dp">
+    android:layout_marginStart="5dp"
+    android:clickable="true">
 
     <ImageView
         android:id="@+id/ivProfileImage"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_alignParentTop="true"
         android:layout_marginTop="0dp"
         tools:srcCompat="@tools:sample/avatars" />
 
@@ -19,8 +21,10 @@
         android:id="@+id/tvScreenName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_marginStart="5dp"
-        android:layout_toEndOf="@+id/ivProfileImage"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@+id/tvName"
         tools:text="twitter_user_586" />
 
     <TextView
@@ -29,8 +33,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvScreenName"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="5dp"
         android:layout_toEndOf="@+id/ivProfileImage"
+        android:textColor="@android:color/black"
         tools:text="this is my tweet! yay :D i ate congee for breakfast" />
 
     <ImageView
@@ -47,7 +52,67 @@
         android:id="@+id/tvTimestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_marginStart="5dp"
+        android:layout_marginTop="0dp"
         android:layout_toEndOf="@+id/tvScreenName"
         tools:text="5m" />
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+
+        android:layout_height="1dp"
+        android:layout_below="@+id/btnLike"
+        android:layout_marginTop="10dp"
+        android:background="#D8D8D8" />
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@+id/ivProfileImage"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        tools:text="TwitterUser123" />
+
+    <ImageView
+        android:id="@+id/btnLike"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_below="@+id/ivContentImage"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="15dp"
+        android:layout_toEndOf="@+id/btnRetweet"
+        android:contentDescription="@string/Like"
+        app:srcCompat="@drawable/ic_vector_heart_stroke"
+        app:tint="#747474"
+        tools:layout_marginTop="15dp" />
+
+    <ImageView
+        android:id="@+id/btnRetweet"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_below="@+id/ivContentImage"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="15dp"
+        android:layout_toEndOf="@+id/btnReply"
+        android:contentDescription="@string/Retweet"
+        app:srcCompat="@drawable/ic_vector_retweet_stroke"
+        app:tint="#747474"
+        tools:layout_marginTop="15dp" />
+
+    <ImageButton
+        android:id="@+id/btnReply"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_below="@+id/ivContentImage"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="15dp"
+        android:layout_toEndOf="@+id/ivProfileImage"
+        android:background="@android:color/transparent"
+        app:srcCompat="@android:drawable/sym_action_chat"
+        tools:layout_marginTop="15dp" />
+
 </RelativeLayout>

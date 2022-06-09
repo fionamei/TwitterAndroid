@@ -22,7 +22,8 @@ public class Tweet {
     public User user;
     public String contentImageUrl;
     public String timeAgo;
-
+    public String likes;
+    public String retweets;
 
     public Tweet() {}
 
@@ -33,6 +34,9 @@ public class Tweet {
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
         tweet.contentImageUrl = getImageUrl(jsonObject.getJSONObject("entities"));
         tweet.timeAgo = getRelativeTimeAgo(tweet.createdAt);
+        tweet.retweets = jsonObject.getString("retweet_count");
+        tweet.likes = jsonObject.getString("favorite_count");
+
         return tweet;
     }
 
