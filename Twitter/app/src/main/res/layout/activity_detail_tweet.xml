@@ -66,6 +66,7 @@
         android:layout_marginTop="10dp"
         android:textColor="@android:color/black"
         android:textSize="20sp"
+        android:autoLink="all"
         tools:text="this is my tweet! yay :D i ate congee for breakfast" />
 
     <TextView
