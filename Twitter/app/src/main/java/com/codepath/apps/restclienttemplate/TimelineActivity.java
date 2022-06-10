@@ -87,7 +87,6 @@ public class TimelineActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 swipeContainer.setRefreshing(false);
-                Log.i("TimelineActivity", "refreshed and added tweets successfully");
             }
 
             @Override

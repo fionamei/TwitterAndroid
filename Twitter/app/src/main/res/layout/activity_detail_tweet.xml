@@ -116,17 +116,19 @@
         tools:layout_marginTop="10dp"
         tools:text="1,700 Likes" />
 
-    <ImageView
-        android:id="@+id/btnLike"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_below="@+id/line2"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="11dp"
-        android:layout_toEndOf="@+id/btnRetweet"
-        android:contentDescription="@string/Like"
-        app:srcCompat="@drawable/ic_vector_heart_stroke"
-        app:tint="#747474" />
+<!--    <ImageView-->
+<!--        android:id="@+id/btnLike"-->
+<!--        android:layout_width="25dp"-->
+<!--        android:layout_height="25dp"-->
+<!--        android:layout_below="@+id/line2"-->
+<!--        android:layout_marginStart="80dp"-->
+<!--        android:layout_marginTop="11dp"-->
+<!--        android:layout_toEndOf="@+id/btnRetweet"-->
+<!--        android:clickable="true"-->
+<!--        android:contentDescription="@string/Like"-->
+<!--        android:focusable="true"-->
+<!--        app:srcCompat="@drawable/ic_vector_heart_stroke"-->
+<!--        app:tint="#747474" />-->
 
     <ImageView
         android:id="@+id/btnRetweet"
@@ -150,6 +152,20 @@
         android:layout_marginTop="7dp"
         android:background="@android:color/transparent"
         app:srcCompat="@android:drawable/sym_action_chat" />
+
+    <ImageButton
+        android:id="@+id/btnLike"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/btnRetweet"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="-7dp"
+        android:layout_toEndOf="@+id/btnRetweet"
+        android:background="@android:color/transparent"
+        android:clickable="true"
+        android:focusable="true"
+        app:srcCompat="@drawable/ic_vector_heart_stroke"
+        app:tint="@color/inline_action" />
 
 </RelativeLayout>
 </ScrollView>

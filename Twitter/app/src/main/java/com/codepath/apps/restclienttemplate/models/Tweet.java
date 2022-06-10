@@ -24,6 +24,9 @@ public class Tweet {
     public String timeAgo;
     public String likes;
     public String retweets;
+    public boolean favorited;
+    public boolean retweeted;
+    public long id;
 
     public Tweet() {}
 
@@ -36,6 +39,9 @@ public class Tweet {
         tweet.timeAgo = getRelativeTimeAgo(tweet.createdAt);
         tweet.retweets = jsonObject.getString("retweet_count");
         tweet.likes = jsonObject.getString("favorite_count");
+        tweet.favorited = jsonObject.getBoolean("favorited");
+        tweet.retweeted = jsonObject.getBoolean("retweeted");
+        tweet.id = jsonObject.getLong("id");
 
         return tweet;
     }

@@ -2,10 +2,13 @@ package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,10 +18,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
 import org.parceler.Parcels;
 
 import java.util.List;
+
+import okhttp3.Headers;
 
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
 
@@ -46,6 +52,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         Tweet tweet = tweets.get(position);
         //sets the tag to get the tweet later in detail view
         holder.rootView.setTag(tweet);
+        holder.btnLike.setTag(tweet);
         //bind the data that we get (the tweet) with the view holder
         holder.bind(tweet);
     }
@@ -65,6 +72,9 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvTimestamp;
         View rootView;
         TextView tvName;
+        ImageButton btnLike;
+        TextView tvLikeCount;
+        TextView tvRetweetCount;
 
 
         // a tweet
@@ -77,6 +87,13 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             ivContentImage = itemView.findViewById(R.id.ivContentImage);
             tvTimestamp = itemView.findViewById(R.id.tvTimestamp);
             tvName = itemView.findViewById(R.id.tvName);
+            btnLike = itemView.findViewById(R.id.btnLike);
+            tvLikeCount = itemView.findViewById(R.id.tvLikeCount);
+            tvRetweetCount = itemView.findViewById(R.id.tvRetweetCount);
+
+
+            TwitterClient client = TwitterApp.getRestClient(context);
+
 
             rootView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -90,6 +107,49 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     }
                 }
             });
+
+            btnLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final Tweet tweet = (Tweet)view.getTag();
+                    Log.i("TweetsAdapter", "tweet like button clicked! id is" + tweet.id);
+                    if (tweet.favorited) {
+                        client.unlikeTweet(tweet.id, new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                                Log.i("TweetsAdapter", "should have been unliked!" + tweet.likes);
+                                tweet.favorited = false;
+                                tweet.likes = String.valueOf(((Integer.parseInt(tweet.likes)) - 1));
+                                notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                                Log.e("TweetsAdapter", new Throwable(throwable).toString());
+                            }
+                        });
+                    } else {
+                        client.likeTweet(tweet.id, new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                                Log.i("TweetsAdapter", "should have been liked!" + tweet.likes);
+                                tweet.favorited = true;
+                                tweet.likes = String.valueOf(((Integer.parseInt(tweet.likes)) + 1));
+                                notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                                Log.e("TweetsAdapter", new Throwable(throwable).toString());
+                            }
+                        });
+                    }
+
+                }
+            });
+
+
+
         }
 
         public void bind (Tweet tweet) {
@@ -97,6 +157,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvScreenName.setText("@" + tweet.user.screenName);
             tvTimestamp.setText(tweet.timeAgo);
             tvName.setText(tweet.user.name);
+            tvRetweetCount.setText(tweet.retweets);
+            tvLikeCount.setText(tweet.likes);
             Glide.with(context)
                         .load(tweet.user.profileImageUrl)
                         .circleCrop()
@@ -110,6 +172,15 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 // must set this to gone or certain views will be reused
                 ivContentImage.setVisibility(View.GONE);
             }
+
+            if (tweet.favorited) {
+                btnLike.setColorFilter(Color.argb(255,255,0,0));
+                Log.i("TweetsAdapter", "its favorited..");
+            } else {
+                btnLike.setColorFilter(Color.argb(0,255,0,0));
+            }
+
+
         }
     }
 
@@ -124,5 +195,9 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         tweets.addAll(list);
         notifyDataSetChanged();
     }
+
+
+
+
 
 }
