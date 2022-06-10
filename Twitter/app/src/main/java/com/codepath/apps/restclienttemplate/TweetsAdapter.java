@@ -80,33 +80,20 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         // a tweet
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            rootView = itemView;
-            ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
-            tvBody = itemView.findViewById(R.id.tvBody);
-            tvScreenName = itemView.findViewById(R.id.tvScreenName);
-            ivContentImage = itemView.findViewById(R.id.ivContentImage);
-            tvTimestamp = itemView.findViewById(R.id.tvTimestamp);
-            tvName = itemView.findViewById(R.id.tvName);
-            btnLike = itemView.findViewById(R.id.btnLike);
-            tvLikeCount = itemView.findViewById(R.id.tvLikeCount);
-            tvRetweetCount = itemView.findViewById(R.id.tvRetweetCount);
-
+            initViews(itemView);
 
             TwitterClient client = TwitterApp.getRestClient(context);
 
+            listenerSetup(client);
 
-            rootView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    final Tweet tweet = (Tweet)view.getTag();
-                    if (tweet != null) {
-                        Intent i = new Intent(context, DetailTweetActivity.class);
-                        i.putExtra("TweetDetails", Parcels.wrap(tweet));
-                        context.startActivity(i);
-                    }
-                }
-            });
+        }
 
+        private void listenerSetup(TwitterClient client) {
+            detailViewListener();
+            likeListener(client);
+        }
+
+        private void likeListener(TwitterClient client) {
             btnLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -143,9 +130,33 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
                 }
             });
+        }
 
+        private void detailViewListener() {
+            rootView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final Tweet tweet = (Tweet)view.getTag();
+                    if (tweet != null) {
+                        Intent i = new Intent(context, DetailTweetActivity.class);
+                        i.putExtra("TweetDetails", Parcels.wrap(tweet));
+                        context.startActivity(i);
+                    }
+                }
+            });
+        }
 
-
+        private void initViews(@NonNull View itemView) {
+            rootView = itemView;
+            ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
+            tvBody = itemView.findViewById(R.id.tvBody);
+            tvScreenName = itemView.findViewById(R.id.tvScreenName);
+            ivContentImage = itemView.findViewById(R.id.ivContentImage);
+            tvTimestamp = itemView.findViewById(R.id.tvTimestamp);
+            tvName = itemView.findViewById(R.id.tvName);
+            btnLike = itemView.findViewById(R.id.btnLike);
+            tvLikeCount = itemView.findViewById(R.id.tvLikeCount);
+            tvRetweetCount = itemView.findViewById(R.id.tvRetweetCount);
         }
 
         public void bind (Tweet tweet) {
@@ -190,9 +201,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         tweets.addAll(list);
         notifyDataSetChanged();
     }
-
-
-
 
 
 }

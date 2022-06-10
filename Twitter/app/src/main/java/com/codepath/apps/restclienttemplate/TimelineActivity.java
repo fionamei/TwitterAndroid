@@ -50,26 +50,38 @@ public class TimelineActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
 
-        client = TwitterApp.getRestClient(this);
-
-        // find the recycler view
-        rvTweets = findViewById(R.id.rvTweets);
-        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        initViews();
 
         //initialize the list of tweets and adapter
         tweets = new ArrayList<>();
         adapter = new TweetsAdapter(this, tweets);
-        //recycler view setup: layout manager and the adapter
-        rvTweets.setLayoutManager(new LinearLayoutManager(this));
-        rvTweets.setAdapter(adapter);
 
-        populateHomeTimeline();
+
+        //recycler view setup: layout manager and the adapter
+        populateContent();
+
+        settingListeners();
+
+        // Adds the scroll listener to RecyclerView
+
+
+
+    }
+
+    private void initViews() {
+        client = TwitterApp.getRestClient(this);
+        rvTweets = findViewById(R.id.rvTweets);
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+    }
+
+    private void settingListeners() {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 fetchTimelineAsync(0);
             }
         });
+
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvTweets.setLayoutManager(linearLayoutManager);
@@ -80,11 +92,14 @@ public class TimelineActivity extends AppCompatActivity {
                 loadNextDataFromApi(page);
             }
         };
-        // Adds the scroll listener to RecyclerView
+
         rvTweets.addOnScrollListener(scrollListener);
+    }
 
-
-
+    private void populateContent() {
+        rvTweets.setLayoutManager(new LinearLayoutManager(this));
+        rvTweets.setAdapter(adapter);
+        populateHomeTimeline();
     }
 
     private void loadNextDataFromApi(int page) {

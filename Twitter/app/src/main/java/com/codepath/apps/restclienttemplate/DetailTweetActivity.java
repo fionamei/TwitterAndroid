@@ -40,47 +40,13 @@ public class DetailTweetActivity extends AppCompatActivity {
 
         client = TwitterApp.getRestClient(this);
 
+        initViews();
+        populateViews();
+        listenerSetup();
 
-        ivProfileImage = findViewById(R.id.ivProfileImage);
-        tvName = findViewById(R.id.tvName);
-        tvBody = findViewById(R.id.tvBody);
-        tvScreenName = findViewById(R.id.tvScreenName);
-        ivContentImage = findViewById(R.id.ivContentImage);
-        tvCreatedAt = findViewById(R.id.tvCreatedAt);
-        tvRetweetCount = findViewById(R.id.tvRetweetCount);
-        tvLikeCount = findViewById(R.id.tvLikeCount);
-        btnLike = findViewById(R.id.btnLike);
+    }
 
-
-
-        tweet = (Tweet) Parcels.unwrap(getIntent().getParcelableExtra("TweetDetails"));
-        tvName.setText(tweet.user.name);
-        tvBody.setText(tweet.body);
-        tvScreenName.setText("@" + tweet.user.screenName);
-        tvCreatedAt.setText( tweet.createdAt.substring(11,19) + " • " + tweet.createdAt.substring(0, 10));
-        tvRetweetCount.setText(tweet.retweets + " Retweets");
-        tvLikeCount.setText(tweet.likes + " Likes");
-
-        Glide.with(this)
-                .load(tweet.user.profileImageUrl)
-                .circleCrop()
-                .into(ivProfileImage);
-        if (tweet.contentImageUrl != null) {
-            ivContentImage.setVisibility(View.VISIBLE);
-            Glide.with(this)
-                    .load(tweet.contentImageUrl)
-                    .into(ivContentImage);
-        } else {
-            // must set this to gone or certain views will be reused
-            ivContentImage.setVisibility(View.GONE);
-        }
-
-        if (tweet.favorited) {
-            btnLike.setColorFilter(Color.argb(255,255,0,0));
-        } else {
-            btnLike.setColorFilter(Color.argb(0,255,0,0));
-        }
-
+    private void listenerSetup() {
         btnLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -115,9 +81,49 @@ public class DetailTweetActivity extends AppCompatActivity {
                         }
                     });
                 }
-
             }
         });
+    }
 
+    private void populateViews() {
+        tweet = (Tweet) Parcels.unwrap(getIntent().getParcelableExtra("TweetDetails"));
+        tvName.setText(tweet.user.name);
+        tvBody.setText(tweet.body);
+        tvScreenName.setText("@" + tweet.user.screenName);
+        tvCreatedAt.setText( tweet.createdAt.substring(11,19) + " • " + tweet.createdAt.substring(0, 10));
+        tvRetweetCount.setText(tweet.retweets + " Retweets");
+        tvLikeCount.setText(tweet.likes + " Likes");
+
+        Glide.with(this)
+                .load(tweet.user.profileImageUrl)
+                .circleCrop()
+                .into(ivProfileImage);
+        if (tweet.contentImageUrl != null) {
+            ivContentImage.setVisibility(View.VISIBLE);
+            Glide.with(this)
+                    .load(tweet.contentImageUrl)
+                    .into(ivContentImage);
+        } else {
+            // must set this to gone or certain views will be reused
+            ivContentImage.setVisibility(View.GONE);
+        }
+
+        if (tweet.favorited) {
+            btnLike.setColorFilter(Color.argb(255,255,0,0));
+        } else {
+            btnLike.setColorFilter(Color.argb(0,255,0,0));
+        }
+    }
+
+    private void initViews() {
+        ivProfileImage = findViewById(R.id.ivProfileImage);
+        tvName = findViewById(R.id.tvName);
+        tvBody = findViewById(R.id.tvBody);
+        tvScreenName = findViewById(R.id.tvScreenName);
+        ivContentImage = findViewById(R.id.ivContentImage);
+        tvCreatedAt = findViewById(R.id.tvCreatedAt);
+        tvRetweetCount = findViewById(R.id.tvRetweetCount);
+        tvLikeCount = findViewById(R.id.tvLikeCount);
+        btnLike = findViewById(R.id.btnLike);
     }
 }

@@ -34,10 +34,14 @@ public class ComposeActivity extends AppCompatActivity {
 
         client = TwitterApp.getRestClient(this);
 
-        etCompose = findViewById(R.id.etCompose);
-        btnTweet = findViewById(R.id.btnTweet);
+        initViews();
 
         // set click listener on button
+        listenerSetup();
+
+    }
+
+    private void listenerSetup() {
         btnTweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,10 +75,12 @@ public class ComposeActivity extends AppCompatActivity {
                         Log.e(TAG, "onFailure to publish tweet", throwable);
                     }
                 });
-
-
             }
         });
+    }
 
+    private void initViews() {
+        etCompose = findViewById(R.id.etCompose);
+        btnTweet = findViewById(R.id.btnTweet);
     }
 }
