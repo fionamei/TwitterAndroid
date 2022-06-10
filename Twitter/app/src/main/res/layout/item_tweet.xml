@@ -79,8 +79,8 @@
 
     <ImageButton
         android:id="@+id/btnLike"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_below="@+id/ivContentImage"
         android:layout_marginStart="60dp"
         android:layout_marginTop="15dp"
@@ -88,8 +88,7 @@
         android:background="@android:color/transparent"
         android:clickable="true"
         android:focusable="true"
-        app:srcCompat="@drawable/ic_vector_heart_stroke"
-        app:tint="@color/inline_action" />
+        app:srcCompat="@drawable/ic_vector_heart_stroke" />
 
     <ImageView
         android:id="@+id/btnRetweet"
@@ -101,7 +100,6 @@
         android:layout_toEndOf="@+id/btnReply"
         android:contentDescription="@string/Retweet"
         app:srcCompat="@drawable/ic_vector_retweet_stroke"
-        app:tint="#747474"
         tools:layout_marginTop="15dp" />
 
     <ImageButton

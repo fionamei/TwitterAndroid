@@ -140,8 +140,7 @@
         android:layout_marginTop="10dp"
         android:layout_toEndOf="@+id/btnReply"
         android:contentDescription="@string/Retweet"
-        app:srcCompat="@drawable/ic_vector_retweet_stroke"
-        app:tint="#747474" />
+        app:srcCompat="@drawable/ic_vector_retweet_stroke" />
 
     <ImageButton
         android:id="@+id/btnReply"
@@ -156,17 +155,16 @@
 
     <ImageButton
         android:id="@+id/btnLike"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_alignTop="@+id/btnRetweet"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="-7dp"
+        android:layout_marginTop="0dp"
         android:layout_toEndOf="@+id/btnRetweet"
         android:background="@android:color/transparent"
         android:clickable="true"
         android:focusable="true"
-        app:srcCompat="@drawable/ic_vector_heart_stroke"
-        app:tint="@color/inline_action" />
+        app:srcCompat="@drawable/ic_vector_heart_stroke" />
 
 </RelativeLayout>
 </ScrollView>
