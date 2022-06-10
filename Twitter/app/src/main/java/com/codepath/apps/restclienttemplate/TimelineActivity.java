@@ -42,6 +42,8 @@ public class TimelineActivity extends AppCompatActivity {
     List<Tweet> tweets;
     TweetsAdapter adapter;
     private SwipeRefreshLayout swipeContainer;
+    private EndlessRecyclerViewScrollListener scrollListener;
+    long max_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +71,47 @@ public class TimelineActivity extends AppCompatActivity {
             }
         });
 
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        rvTweets.setLayoutManager(linearLayoutManager);
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+                loadNextDataFromApi(page);
+            }
+        };
+        // Adds the scroll listener to RecyclerView
+        rvTweets.addOnScrollListener(scrollListener);
 
+
+
+    }
+
+    private void loadNextDataFromApi(int offset) {
+        Log.i(TAG, "onloadmore is called offset is " + offset);
+        max_id = tweets.get(tweets.size()-1).id - 1;
+        client.infiniteScroll(max_id, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                JSONArray jsonArray = json.jsonArray;
+                try {
+                    int start = tweets.size();
+                    tweets.addAll(Tweet.fromJsonArray(jsonArray));
+                    max_id = tweets.get(tweets.size()-1).id;
+                    adapter.notifyItemRangeInserted(start, 25);
+
+                } catch (JSONException e) {
+                    Log.e(TAG, "Json exception", e);
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                Log.e(TAG, String.valueOf(throwable));
+            }
+        });
 
     }
 
@@ -146,6 +188,7 @@ public class TimelineActivity extends AppCompatActivity {
                 JSONArray jsonArray = json.jsonArray;
                 try {
                     tweets.addAll(Tweet.fromJsonArray(jsonArray));
+                    max_id = tweets.get(tweets.size()-1).id;
                     adapter.notifyDataSetChanged();
 
                 } catch (JSONException e) {
