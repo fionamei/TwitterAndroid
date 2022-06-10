@@ -54,7 +54,6 @@ public class DetailTweetActivity extends AppCompatActivity {
 
 
         tweet = (Tweet) Parcels.unwrap(getIntent().getParcelableExtra("TweetDetails"));
-        Log.i("DetailTweetActivity", "showing detail for tweet: " + tweet.body);
         tvName.setText(tweet.user.name);
         tvBody.setText(tweet.body);
         tvScreenName.setText("@" + tweet.user.screenName);
@@ -78,8 +77,6 @@ public class DetailTweetActivity extends AppCompatActivity {
 
         if (tweet.favorited) {
             btnLike.setColorFilter(Color.argb(255,255,0,0));
-//            btnLike.setColorFilter(R.color.inline_action_like_pressed); -> this doesnt work
-            Log.i("DetailTweetActivity", "its favorited..");
         } else {
             btnLike.setColorFilter(Color.argb(0,255,0,0));
         }
@@ -87,12 +84,10 @@ public class DetailTweetActivity extends AppCompatActivity {
         btnLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("DetailTweetActivity", "tweet like button clicked! id is" + tweet.id);
                 if (tweet.favorited) {
                     client.unlikeTweet(tweet.id, new JsonHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Headers headers, JSON json) {
-                            Log.i("DetailTweetActivity", "should have been unliked!" + tweet.likes);
                             btnLike.setColorFilter(Color.argb(0,255,0,0));
                             tweet.favorited = false;
                             tweet.likes = String.valueOf(((Integer.parseInt(tweet.likes)) - 1));
@@ -108,7 +103,6 @@ public class DetailTweetActivity extends AppCompatActivity {
                     client.likeTweet(tweet.id, new JsonHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Headers headers, JSON json) {
-                            Log.i("DetailTweetActivity", "should have been liked!" + tweet.likes);
                             btnLike.setColorFilter(Color.argb(255,255,0,0));
                             tweet.favorited = true;
                             tweet.likes = String.valueOf(((Integer.parseInt(tweet.likes)) + 1));

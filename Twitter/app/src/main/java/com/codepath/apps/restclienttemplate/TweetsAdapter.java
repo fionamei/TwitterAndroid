@@ -99,7 +99,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 @Override
                 public void onClick(View view) {
                     final Tweet tweet = (Tweet)view.getTag();
-                    Log.i("TweetsAdapter", "tweet clicked!" + tweet);
                     if (tweet != null) {
                         Intent i = new Intent(context, DetailTweetActivity.class);
                         i.putExtra("TweetDetails", Parcels.wrap(tweet));
@@ -112,12 +111,10 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 @Override
                 public void onClick(View view) {
                     final Tweet tweet = (Tweet)view.getTag();
-                    Log.i("TweetsAdapter", "tweet like button clicked! id is" + tweet.id);
                     if (tweet.favorited) {
                         client.unlikeTweet(tweet.id, new JsonHttpResponseHandler() {
                             @Override
                             public void onSuccess(int statusCode, Headers headers, JSON json) {
-                                Log.i("TweetsAdapter", "should have been unliked!" + tweet.likes);
                                 tweet.favorited = false;
                                 tweet.likes = String.valueOf(((Integer.parseInt(tweet.likes)) - 1));
                                 notifyDataSetChanged();
@@ -132,7 +129,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                         client.likeTweet(tweet.id, new JsonHttpResponseHandler() {
                             @Override
                             public void onSuccess(int statusCode, Headers headers, JSON json) {
-                                Log.i("TweetsAdapter", "should have been liked!" + tweet.likes);
                                 tweet.favorited = true;
                                 tweet.likes = String.valueOf(((Integer.parseInt(tweet.likes)) + 1));
                                 notifyDataSetChanged();
@@ -175,7 +171,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
             if (tweet.favorited) {
                 btnLike.setColorFilter(Color.argb(255,255,0,0));
-                Log.i("TweetsAdapter", "its favorited..");
             } else {
                 btnLike.setColorFilter(Color.argb(0,255,0,0));
             }

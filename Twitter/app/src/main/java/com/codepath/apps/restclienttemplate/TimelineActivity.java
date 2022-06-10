@@ -77,7 +77,6 @@ public class TimelineActivity extends AppCompatActivity {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 // Triggered only when new data needs to be appended to the list
-                // Add whatever code is needed to append new items to the bottom of the list
                 loadNextDataFromApi(page);
             }
         };
@@ -88,8 +87,7 @@ public class TimelineActivity extends AppCompatActivity {
 
     }
 
-    private void loadNextDataFromApi(int offset) {
-        Log.i(TAG, "onloadmore is called offset is " + offset);
+    private void loadNextDataFromApi(int page) {
         max_id = tweets.get(tweets.size()-1).id - 1;
         client.infiniteScroll(max_id, new JsonHttpResponseHandler() {
             @Override
