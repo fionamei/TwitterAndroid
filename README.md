@@ -46,8 +46,12 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
+Liking in detailed view:
+
 
 <img src='./twitter2.gif' title='Video Walkthrough' width='300' alt='Video Walkthrough' />
+
+Composing a tweet:
 <img src='./twitter3.gif' title='Video Walkthrough' width='300' alt='Video Walkthrough' />
 
 
